@@ -1,0 +1,31 @@
+# XM Bakery Stock & Order Management API
+
+## Features
+- Authentication
+- Product management
+- Order management
+- Inventory tracking
+- Reports
+
+## Technologies
+- Node.js
+- Express.js
+- MongoDB
+- JWT
+
+## Installation
+npm install
+
+## Run
+npm run dev
+
+## Environment Variables
+MONGO_URI=mongodb://localhost:27017/XMBakeries
+JWT_SECRET=your_secret_key
+PORT=8000
+
+## API Endpoints
+/api/auth
+/api/products
+/api/orders
+/api/reports
