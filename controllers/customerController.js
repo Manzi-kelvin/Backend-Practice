@@ -1,56 +1,56 @@
-const Customer = require('../models/Customer');
-const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
+const Customer = require('../models/User')
 
-// 🟢 Create Customer
+
 exports.createCustomer = async (req, res) => {
     try {
-        const { name, email, address } = req.body;
+        const { name, email, password, address } = req.body
+        const hashedPassword = await bcrypt.hash(password, 10)
 
-        // const hashedPassword = await bcrypt.hash(password, 10);
-
-        const customer = await Customer.create({
+        const customer = Customer.create({
             name,
             email,
+            password: hashedPassword,
             address
-        });
-
-        res.status(201).json(customer);
+        })
+        res.status(201).json({ message: 'Customer created successfuly' })
     } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
+        res.status(500).json({ message: 'Customer not created', error: error.message })
 
-// 🔵 Get All Customers
+    }
+}
+
 exports.getCustomers = async (req, res) => {
     try {
-        const customers = await Customer.find();
-        res.json(customers);
+        const customers = await Customer.find()
+        res.status(200).json({ message: 'Customers retreived', customers })
     } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
+        res.status(500).json({ message: 'Customer not retreived', error: error.message })
 
-// 🟡 Update Customer
+    }
+}
+
 exports.updateCustomer = async (req, res) => {
     try {
         const customer = await Customer.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
-        );
-
-        res.json(customer);
+        )
+        res.status(200).json({ message: 'Updated', customer})
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Not Updated', error: error.message})
+        
     }
-};
+}
 
-// delete customer
 exports.deleteCustomer = async (req, res) => {
     try {
-        await Customer.findByIdAndDelete(req.params.id);
-        res.json({ message: "Customer deleted successfully" });
+        await Customer.findByIdAndDelete(req.params.id)
+        res.status(200).json({ message: 'Deleted'})
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Not Deleted', error: error.message})
+        
     }
-};
+}

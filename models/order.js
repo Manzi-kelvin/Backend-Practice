@@ -1,85 +1,114 @@
-// // Import Mongoose (ODM for MongoDB)
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-// // Define schema (structure of your data)
+const orderSchema = new mongoose.Schema(
+    {
+        customer: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+            trim: true,
+        },
+        products: [
+            {
+                product: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Product',
+                    required: true,
+                },
+                quantity: {
+                    type: Number,
+                    required: true,
+                    min: 1
+                }
+            }
+        ],
+        status: {
+            type: String,
+            required: true,
+            enum: ['Pending', 'Delivered', 'Processing'],
+            default: 'Pending'
+        }
+    },
+    {
+        timestamps: true
+    }
+)
+
+module.exports = mongoose.model('Order', orderSchema)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const mongoose = require('mongoose')
+
 // const orderSchema = new mongoose.Schema(
 //     {
-//         // 🔹 Reference to Customer model (foreign key)
-//         customer: {
+//         user: {
 //             type: mongoose.Schema.Types.ObjectId,
-//             ref: 'Customer', // refers to Customer collection
-//             required: true
+//             ref: 'User',
+//             require: true
 //         },
-
-//         // 🔹 Reference to product model (foreign key)
-//         product: {
-//             type: mongoose.Schema.Types.ObjectId,
-//             ref: 'Product', // refers to Product collection
-//             required: true
-//         },
-
-//         // 🔹 Product price
-//         totalPrice: {
+//         products: [
+//             {
+//                 product: {
+//                     type: mongoose.Schema.Types.ObjectId,
+//                     ref: 'Product',
+//                     require: true,
+//                     min: 0
+//                 },
+//                 quantity: {
+//                     type: Number,
+//                     require: true,
+//                     min: 1
+//                 }
+//             }
+//         ],
+//         totalAmount: {
 //             type: Number,
-//             required: true,
-//             min: 0 // ensures price is not negative
+//             require: true,
+//             min: 0
 //         },
-
-//         // 🔹 Product quantity
 //         status: {
 //             type: String,
-//             required: true,
-//             enum: ['pending', 'processing', 'shipped', 'delivered'] // ensures status is one of these values
+//             enum: ['Pending', 'Processing', 'Delivered'],
+//             default: 'Pending'
 //         }
 //     },
 //     {
-//         // 🔹 Schema options (SECOND argument, not inside fields)
-//         timestamps: true // adds createdAt & updatedAt automatically
+//         timestamps: true
 //     }
-// );
+// )
 
-// // Export model (used in controllers/routes)
-// module.exports = mongoose.model('order', orderSchema);
-
-const mongoose = require('mongoose');
-
-const orderSchema = new mongoose.Schema(
-{
-    customer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'customer',
-        required: true
-    },
-
-    // ✅ Allow multiple products in one order
-    products: [
-        {
-            product: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Product',
-                required: true
-            },
-            quantity: {
-                type: Number,
-                required: true,
-                min: 1
-            }
-        }
-    ],
-
-    totalPrice: {
-        type: Number,
-        required: true,
-        min: 0
-    },
-
-    status: {
-        type: String,
-        enum: ['pending', 'processing', 'shipped', 'delivered'],
-        default: 'pending'
-    }
-},
-{ timestamps: true }
-);
-
-module.exports = mongoose.model('Order', orderSchema);
+// module.exports = mongoose.model('Order', orderSchema)

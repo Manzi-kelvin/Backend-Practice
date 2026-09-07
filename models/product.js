@@ -1,42 +1,81 @@
-// Import Mongoose (ODM for MongoDB)
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-// Define schema (structure of your data)
 const productSchema = new mongoose.Schema(
     {
-        // 🔹 Product name
-        productName: {
+        name: {
             type: String,
             required: true,
-            trim: true // removes extra spaces
+            trim: true,
         },
-
-        // 🔹 Product price
-        productPrice: {
+        quantity: {
             type: Number,
             required: true,
-            min: 0 // ensures price is not negative
+            min: 0
         },
-
-        // 🔹 Product quantity
-        productQuantity: {
-            type: Number,
-            required: true,
-            min: 0 // ensures quantity is not negative
-        },
-
-        // 🔹 Product Category
-        productCategory: {
+        category: {
             type: String,
             required: true,
-            trim: true
         }
     },
     {
-        // 🔹 Schema options (SECOND argument, not inside fields)
-        timestamps: true // adds createdAt & updatedAt automatically
+        timestamps: true
     }
-);
+)
 
-// Export model (used in controllers/routes)
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Product', productSchema)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const mongoose = require('mongoose')
+
+// const productSchema = new mongoose.Schema(
+//     {
+//         name: {
+//             type: String,
+//             require: true,
+//             trim: true
+//         },
+//         price: {
+//             type: Number,
+//             require: true,
+//             trim: true,
+//             min: 0
+//         },
+//         quantity: {
+//             type: Number,
+//             require: true,
+//             min: 0
+//         },
+//         category: {
+//             type: String,
+//             require: true,
+//             trim: true
+//         }
+//     },
+//     {
+//         timestamps: true
+//     }
+// )
+
+// module.exports = mongoose.model('Product', productSchema)
