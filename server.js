@@ -1,21 +1,20 @@
-const express = require('express')
-const app = express();
+import express from 'express'
+import 'dotenv/config'
+import connectDB from './config/db.js'
+import userRoutes from './routes/userRoute.js'
+import productsRoute from  './routes/productsRoute.js'
+import authRoutes from "./routes/authRoute.js"
+import orderRoute from './routes/orderRoute.js'
 
-require('dotenv').config()
-const connectDB = require('./config/db')
+const app = express();
 connectDB();
 
 app.use(express.json())
 
-const customerRoutes = require('./routes/customerRoute');
-app.use('/api', customerRoutes)
-const productsRoute = require('./routes/productsRoute');
+app.use('/api', userRoutes)
 app.use('/api', productsRoute)
-const orderRoute = require('./routes/orderRoute');
 app.use('/api', orderRoute)
-const authRoutes = require("./routes/authRoute");
-app.use("/api/auth", authRoutes);
-
+app.use("/api", authRoutes);
 
 
 app.listen( process.env.PORT, () => {
@@ -42,17 +41,17 @@ app.listen( process.env.PORT, () => {
 
 
 
-// const express = require('express')
+// const express  'express')
 // const app = express()
 // const port = 5000;
 
 // require("dotenv").config();
-// const connectDB = require("./config/db");
+// const connectDB  "./config/db");
 // connectDB();
 
 // app.use(express.json());
 
-// const customerRoute = require("./routes/customerRoute");
+// const customerRoute  "./routes/customerRoute");
 // app.use("/api", customerRoute);
 
 // app.listen(port, () => {

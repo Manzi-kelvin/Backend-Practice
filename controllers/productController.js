@@ -1,12 +1,25 @@
-const mongoose = require('mongoose')
-const Product = require('../models/Product')
+import mongoose from 'mongoose'
+import Product from '../models/Product.js'
 
-exports.createProduct = async (req, res) => {
+const createProduct = async (req, res) => {
     try {
-        const { name, category, quantity } = req.body
+        const { name, price, category, quantity } = req.body
+
+        const existingProduct = await Product.findOne({
+            $or: [{name}]
+        })
+
+        if (!name || !price || !category || !quantity) {
+            res.status(400).json({ message: "All feilds are required"})
+        } 
+        
+        if (existingProduct) {
+            res.status(400).json({ message: "Product exists"})
+        }
 
         const product = Product.create({
             name,
+            price,
             category,
             quantity
         })
@@ -17,7 +30,7 @@ exports.createProduct = async (req, res) => {
     }
 }
 
-exports.getProduct = async (req, res) => {
+const getProduct = async (req, res) => {
     try {
         const products = await Product.find()
         res.status(200).json({ message: 'Product retreived', products })
@@ -27,7 +40,7 @@ exports.getProduct = async (req, res) => {
     }
 }
 
-exports.updateProduct = async (req, res) => {
+const updateProduct = async (req, res) => {
     try {
         const product = await Product.findByIdAndUpdate(
             req.params.id,
@@ -41,7 +54,7 @@ exports.updateProduct = async (req, res) => {
     }
 }
 
-exports.deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res) => {
     try {
         await Product.findByIdAndDelete(req.params.id)
         res.status(200).json({ message: 'Product Deleted'})
@@ -50,3 +63,5 @@ exports.deleteProduct = async (req, res) => {
         
     }
 }
+
+export { createProduct, getProduct, updateProduct, deleteProduct }

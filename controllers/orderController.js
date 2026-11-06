@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
-const Order = require('../models/Order')
+import mongoose from 'mongoose'
+import Order from '../models/Order.js'
 
 // Create Order
-exports.createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
   try {
     const { customer, products, status } = req.body;
 
@@ -25,7 +25,7 @@ exports.createOrder = async (req, res) => {
 };
 
 // Get All Orders
-exports.getOrders = async (req, res) => {
+const getOrders = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("customer", "-password")
@@ -44,7 +44,7 @@ exports.getOrders = async (req, res) => {
 };
 
 // Update Order
-exports.updateOrder = async (req, res) => {
+const updateOrder = async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(
       req.params.id,
@@ -71,7 +71,7 @@ exports.updateOrder = async (req, res) => {
 };
 
 // delete Order
-exports.deleteOrder = async (req, res) => {
+const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findByIdAndDelete(req.params.id);
 
@@ -87,3 +87,4 @@ exports.deleteOrder = async (req, res) => {
   }
 };
 
+export { createOrder, getOrders, updateOrder, deleteOrder };

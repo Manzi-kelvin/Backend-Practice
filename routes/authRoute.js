@@ -1,11 +1,11 @@
-const mongoose = require('mongoose')
-const express = require('express')
+import mongoose from 'mongoose'
+import express from 'express'
 const router = express.Router()
 
-const { register } = require('../controllers/authController')
-const { login } = require('../controllers/authController')
+import { register } from '../controllers/authController.js'
+import { login } from '../controllers/authController.js'
 
 router.post('/auth/register', register)
 router.post('/auth/login', login)
 
-module.exports = router
+export default router

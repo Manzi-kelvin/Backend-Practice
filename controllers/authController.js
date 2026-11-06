@@ -1,6 +1,6 @@
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import User from "../models/User.js"
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 
 // Generate JWT Token
 const generateToken = (id, role) => {
@@ -9,29 +9,29 @@ const generateToken = (id, role) => {
     { id, role }, // It stores information inside the token. id, role
     process.env.JWT_SECRET, //This is the secret password only the server knows.Only someone with the secret key can check that the seal is real.
     { expiresIn: "7d" }
-  );
+  ); 
 };
 
 // ================= REGISTER =================
-// 1 User sends registration information.
+// 1  User sends registration information.
 // 2	Server checks if that user already exists.
 // 3	Password is locked (hashed).
 // 4	New user is saved in MongoDB.
 // 5	Server creates a JWT login token.
 // 6	Server sends the token and user information back.
 
-exports.register = async (req, res) => {
+const register = async (req, res) => {
   try {
-    const { name, email, phone, password, role } = req.body;
+    const { name, email, phone, password, role, address } = req.body;
 
     // Check if email or phone already exists
     const existingUser = await User.findOne({
-      $or: [{ email }, { phone }], //$or means:Find someone whose email matches OR phone matches.
+      $or: [{ email }, { phone }] //$or means:Find someone whose email matches OR phone matches.
     });
 
     if (existingUser) {
-      return res.status(400).json({
-        message: "User already exists.",
+      return res.status(400).json({ 
+        message: "User already exists."
       });
     }
 
@@ -50,6 +50,7 @@ exports.register = async (req, res) => {
       name,
       email,
       phone,
+      address,
       password: hashedPassword,
       role: "customer", // for security reasons.
     });
@@ -61,6 +62,7 @@ exports.register = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        address: user.address,
         phone: user.phone,
         role: user.role,
       },
@@ -78,7 +80,7 @@ exports.register = async (req, res) => {
 // 3	Server compares the password with the hashed password.
 // 4	If they match, server creates a JWT token.
 // 5	Server sends the token and user information back.
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, phone, password } = req.body;
 
@@ -124,3 +126,5 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+export { register, login };
